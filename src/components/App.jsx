@@ -11,7 +11,7 @@ class App extends React.Component {
     const storedContacts = localStorage.getItem('contacts');
     this.state = {
       contacts: storedContacts ? JSON.parse(storedContacts) : [],
-      filter: ''
+      filter: '',
     };
   }
 
@@ -26,18 +26,28 @@ class App extends React.Component {
     const newContact = {
       id: shortid.generate(),
       name,
-      number
+      number,
     };
 
-    this.setState((prevState) => ({
-      contacts: [...prevState.contacts, newContact]
-    }));
+    this.setState(
+      (prevState) => ({
+        contacts: [...prevState.contacts, newContact],
+      }),
+      () => {
+        localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+      }
+    );
   };
 
   handleDeleteContact = (id) => {
-    this.setState((prevState) => ({
-      contacts: prevState.contacts.filter((contact) => contact.id !== id)
-    }));
+    this.setState(
+      (prevState) => ({
+        contacts: prevState.contacts.filter((contact) => contact.id !== id),
+      }),
+      () => {
+        localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+      }
+    );
   };
 
   handleFilterChange = (event) => {
